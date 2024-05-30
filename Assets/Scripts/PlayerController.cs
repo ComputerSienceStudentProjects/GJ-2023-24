@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         if (!_timeToMove) return;
         CheckIfNeedsToMoveBox(); // this call doesn't return any value, since we are only setting the box parent
         floorStatScriptableObject.AddMoves(1); // We add a movement to the floor stats
-        Invoke(nameof(Move),0.5f);
+        Invoke(nameof(Move),0.1f);
         _timeToMove = false;
     }
 
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (_path.Count > 0)
         {
             //if we still have tiles to transverse, we invoke Move again until we transversed all tiles
-            Invoke(nameof(Move),0.5f);
+            Invoke(nameof(Move),0.1f);
         }
     }
 
