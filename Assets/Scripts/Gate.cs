@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [AddComponentMenu("Gate/Gate")]
@@ -9,25 +6,29 @@ public class Gate : MonoBehaviour
     [Header("Gate Options")] 
     [SerializeField] private GameObject gate;
     [SerializeField] private GameObject gateBackdrop;
-    [SerializeField] private bool opened = false;
+    private bool _opened;
 
     private void Awake()
     {
-        opened = false;
+        // In the awake set all default values as a failsafe to ensure
+        // nothing is incorrectly set in the editor
+        _opened = false;
         gate.SetActive(true);
         gateBackdrop.SetActive(false);
     }
 
-    public void SetOpened(bool opened)
+    public void SetOpened(bool openedStatus)
     {
-        this.opened = opened;
+        // Sets the status for the gate
+        _opened = openedStatus;
     }
 
     private void Update()
     {
-        gate.SetActive(!opened);
-        gateBackdrop.SetActive(opened);
+        // If the gate is activated, deactivate the GameObject blocking the path,
+        // and activate the walkableTile for the player to wak on
+        // or if the status is closed, it reverses the operations
+        gate.SetActive(!_opened);
+        gateBackdrop.SetActive(_opened);
     }
-    
-    
 }
