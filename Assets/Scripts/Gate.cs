@@ -8,7 +8,15 @@ public class Gate : MonoBehaviour
 {
     [Header("Gate Options")] 
     [SerializeField] private GameObject gate;
+    [SerializeField] private GameObject gateBackdrop;
     [SerializeField] private bool opened = false;
+
+    private void Awake()
+    {
+        opened = false;
+        gate.SetActive(true);
+        gateBackdrop.SetActive(false);
+    }
 
     public void SetOpened(bool opened)
     {
@@ -18,6 +26,7 @@ public class Gate : MonoBehaviour
     private void Update()
     {
         gate.SetActive(!opened);
+        gateBackdrop.SetActive(opened);
     }
     
     
