@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 point = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
             point.z = 0f;
-            Debug.Log(point);
             if (CheckValidTile(point))
             {
                 _path = FindPathToPoint(transform.position, point);
@@ -81,7 +80,7 @@ public class PlayerController : MonoBehaviour
         while (Vector3.Distance(currentPosition, end) > 0.1f)
         {
             Vector3 direction = (end - currentPosition).normalized;
-            Vector3 nextPosition = currentPosition + direction * 0.32f; // Move one unit towards the target
+            Vector3 nextPosition = currentPosition + direction * 0.32f; 
 
             RaycastHit2D hit = Physics2D.CircleCast(nextPosition, castsize, new Vector2(castsize,0),castsize);
             GameObject checking = hit.collider.gameObject;
