@@ -7,11 +7,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float castSize = 0.1f;
     [SerializeField] private LayerMask boxLayer;
     [SerializeField] private LayerMask walkableLayer;
-
+    [SerializeField] private FloorStatScriptableObject floorStatScriptableObject;
+    
     private GameObject _boxBeingHeld;
     private Camera _mainCamera;
     private Queue<GameObject> _path = new ();
     private bool _timeToMove;
+    
     
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
         // tells us to start a movement.
         if (!_timeToMove) return;
         CheckIfNeedsToMoveBox(); // this call doesn't return any value, since we are only setting the box parent
+        floorStatScriptableObject.AddMoves(1); // We add a movement to the floor stats
         Invoke(nameof(Move),0.5f);
         _timeToMove = false;
     }

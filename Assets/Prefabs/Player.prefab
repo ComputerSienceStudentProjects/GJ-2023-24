@@ -150,3 +150,4 @@ MonoBehaviour:
   walkableLayer:
     serializedVersion: 2
     m_Bits: 64
+  floorStatScriptableObject: {fileID: 11400000, guid: c8ca24a8790ba1d47a973e62c1e1ba3a, type: 2}
