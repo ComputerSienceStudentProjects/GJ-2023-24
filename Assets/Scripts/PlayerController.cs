@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
     {
         // Only listen to Left Mouse Input, since UI is handled Seperated
         if (!Input.GetMouseButtonDown(0)) return;
+        if (_path.Count > 0) return;
         // Gets the corresponding point in the world the user clicked on and then scales with a vector (1,1,0)
         // in order to keep the z coordinate 0
         Vector3 point = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
