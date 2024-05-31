@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
         // any box that is in front of the player, we invoke the main Movement loop, and disable the flag that 
         // tells us to start a movement.
         if (!_timeToMove) return;
-        CheckIfNeedsToMoveBox(); // this call doesn't return any value, since we are only setting the box parent
         floorStatScriptableObject.AddMoves(1); // We add a movement to the floor stats
         Invoke(nameof(Move),0.1f);
         _timeToMove = false;
@@ -60,6 +59,7 @@ public class PlayerController : MonoBehaviour
         // the character had to transverse to reach the destination
         //
         // We Dequeue a tile from the queue, and then move the player to that position
+        CheckIfNeedsToMoveBox(); // this call doesn't return any value, since we are only setting the box parent
         Vector3 targetPosition = _path.Dequeue().transform.position;
         transform.position = targetPosition;
         if (_path.Count > 0)

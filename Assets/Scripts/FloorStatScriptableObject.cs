@@ -8,11 +8,13 @@ public class FloorStatScriptableObject : ScriptableObject
     [Header("Values")] 
     [SerializeField] private int numberOfMoves = 0;
     [SerializeField] private int score = 0;
+    [SerializeField] private int floor = 0;
     [SerializeField] private float time = 0f;
     
     public int GetNumberOfMoves => numberOfMoves;
     public int GetScore => score;
     public float GetTime => time;
+    public float GetFloor => time;
     
     public void SetTime(float newTime)
     {
@@ -45,5 +47,15 @@ public class FloorStatScriptableObject : ScriptableObject
         SetMoves(0);
         SetTime(0);
         SetScore(0);
+    }
+
+    public void IncreaseFloor()
+    {
+        floor += 1;
+    }
+    
+    public void SetFloor(int newFloor)
+    {
+        floor = newFloor;
     }
 }
