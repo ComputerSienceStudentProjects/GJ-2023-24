@@ -3,7 +3,7 @@ using UnityEngine;
 [AddComponentMenu("Gate/Gate")]
 public class Gate : MonoBehaviour
 {
-    [Header("Gate Options")] 
+    [Header("Gate Options")]
     [SerializeField] private GameObject gate;
     [SerializeField] private GameObject gateBackdrop;
     private bool _opened;
@@ -28,7 +28,7 @@ public class Gate : MonoBehaviour
         // If the gate is activated, deactivate the GameObject blocking the path,
         // and activate the walkableTile for the player to wak on
         // or if the status is closed, it reverses the operations
-        gate.SetActive(!_opened);
-        gateBackdrop.SetActive(_opened);
+        if (gate != null) gate.SetActive(!_opened);
+        if (gateBackdrop != null) gateBackdrop.SetActive(_opened);
     }
 }

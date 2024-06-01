@@ -8,13 +8,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask boxLayer;
     [SerializeField] private LayerMask walkableLayer;
     [SerializeField] private FloorStatScriptableObject floorStatScriptableObject;
-    
+
     private GameObject _boxBeingHeld;
     private Camera _mainCamera;
-    private Queue<GameObject> _path = new ();
+    private Queue<GameObject> _path = new();
     private bool _timeToMove;
-    
-    
+
+
     private void Awake()
     {
         // In the awake we get all the references that we will be using on the script, allowing us
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         // tells us to start a movement.
         if (!_timeToMove) return;
         floorStatScriptableObject.AddMoves(1); // We add a movement to the floor stats
-        Invoke(nameof(Move),0.1f);
+        Invoke(nameof(Move), 0.1f);
         _timeToMove = false;
     }
 
@@ -40,16 +40,20 @@ public class PlayerController : MonoBehaviour
         // to parent the box to our character, making so that we can use the path queue, in the box as well,
         // without needing to recalculate the final point where the box should end up
         //
+        // DEPRECATED HERE 
+        // **
         // If we don't have a box in out way, we make sure we un-parent any leftover box from any previous movement
         // In order to not move the box if we don't have it "selected"
+        // **
+        // We re-add the floor as the box's parent instead so it gets removed when the level transitions using the tag "Floor"
         RaycastHit2D hit = Physics2D.Raycast(transform.position,
-            (_path.Peek().transform.position - transform.position).normalized,0.32f,boxLayer);
+            (_path.Peek().transform.position - transform.position).normalized, 0.32f, boxLayer);
         if (hit.collider is { gameObject: { tag: "MovableBlock" } })
         {
             _boxBeingHeld = hit.collider.gameObject;
             _boxBeingHeld.transform.parent = transform;
         }
-        else if (_boxBeingHeld != null) _boxBeingHeld.transform.parent = null;
+        else if (_boxBeingHeld != null) _boxBeingHeld.transform.parent = GameObject.FindWithTag("Floor").transform;
     }
 
     private void Move()
@@ -65,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (_path.Count > 0)
         {
             //if we still have tiles to transverse, we invoke Move again until we transversed all tiles
-            Invoke(nameof(Move),0.1f);
+            Invoke(nameof(Move), 0.1f);
         }
     }
 
@@ -86,7 +90,7 @@ public class PlayerController : MonoBehaviour
         // Gets the corresponding point in the world the user clicked on and then scales with a vector (1,1,0)
         // in order to keep the z coordinate 0
         Vector3 point = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        point.Scale(new Vector3(1,1,0f));
+        point.Scale(new Vector3(1, 1, 0f));
         // Checks if it's a valid tile that the player can move to
         if (!CheckValidTile(point)) return;
         // Obtains the path the player character needs to perform to go to desired location
@@ -104,6 +108,7 @@ public class PlayerController : MonoBehaviour
         // We use a queue, since it has access policy of first in first out, allowing us to keep queuing all
         // tiles before executing all movements
         // the queue before its initialized completely
+        int insanity = 0;
         Queue<GameObject> path = new Queue<GameObject>();
         Vector3 currentPosition = start;
         while (Vector3.Distance(currentPosition, end) > 0.1f)
@@ -122,6 +127,8 @@ public class PlayerController : MonoBehaviour
             // performed by the character
             path.Enqueue(checking);
             currentPosition = nextPosition;
+            insanity++;
+            if (insanity > 20) break;
         }
         //after this is all done we return the path we calculated
         return path;
@@ -150,8 +157,8 @@ public class PlayerController : MonoBehaviour
         // This performs a CircleCast on a given origin point, and a reference LayerMask to be tested for, it checks 
         // if the collider of the resulting RaycastHit2D is not null, and if so returns the GameObject 
         // associated with the collider found in the RaycastHit2D
-        RaycastHit2D hit = Physics2D.CircleCast
-            (origin, castSize, new Vector2(castSize,0),castSize,layerMask);
+        RaycastHit2D hit = Physics2D.Raycast
+            (origin, Vector2.zero, 100, layerMask);
         return hit.collider == null ? null : hit.collider.gameObject;
     }
 
@@ -159,6 +166,6 @@ public class PlayerController : MonoBehaviour
     {
         // Makes sure that for any given GameObject we return true if given GameObject isn't null and if the GameObject
         // set tag is "WalkableTile"
-        return tile is { gameObject:{tag:"WalkableTile"}};
+        return tile is { gameObject: { tag: "WalkableTile" } };
     }
 }
