@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorPrefab:
-  - {fileID: 78284440657192718, guid: 20f27a6652631d24fad8524d5b2cc532, type: 3}
   - {fileID: 3330169958365727099, guid: 33cf40a24e6eded48a7708fc8b754ec5, type: 3}
   - {fileID: 6543669516245439277, guid: 54d9f6bd00d58de45aa75e81766e39cd, type: 3}
+  - {fileID: 78284440657192718, guid: 20f27a6652631d24fad8524d5b2cc532, type: 3}
   UiDoc: {fileID: 1110468618}
   speed: 1
 --- !u!4 &17088146
