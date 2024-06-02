@@ -61,7 +61,10 @@ public class FloorHandler : MonoBehaviour
                 floor.transform.position = newPos;
             }
         }
-
+        else
+        {
+            UiDoc.GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("EndScreen").style.display = DisplayStyle.Flex;
+        }
     }
 
     // public function called by LevelEnd.cs, swaps the end game with the start game tiles 
