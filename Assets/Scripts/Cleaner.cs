@@ -4,21 +4,9 @@ using UnityEngine;
 
 public class Cleaner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // Simple box collider destroys floor triggering the spawn of the next floor.
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("Entered col");
         Destroy(col.gameObject);
     }
 }

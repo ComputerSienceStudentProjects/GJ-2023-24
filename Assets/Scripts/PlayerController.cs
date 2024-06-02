@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Character Controller Settings")]
-    [SerializeField] private float castSize = 0.1f;
+    //[SerializeField] private float castSize = 0.1f;
     [SerializeField] private LayerMask boxLayer;
     [SerializeField] private LayerMask walkableLayer;
     [SerializeField] private FloorStatScriptableObject floorStatScriptableObject;
