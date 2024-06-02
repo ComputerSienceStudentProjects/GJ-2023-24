@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
@@ -15,8 +16,9 @@ public class UIController : MonoBehaviour
     private VisualElement mainMenu;
     private VisualElement exitMenu;
     private VisualElement backgroundMenus;
+
     private bool isMainMenuDisplayed = false;
-    private int escapePressCount = 0;
+    private bool isExitMenuDisplayed = false;
 
     private void Start()
     {
@@ -43,7 +45,7 @@ public class UIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            TogglePause();
+            HandleSpacePress();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -52,62 +54,82 @@ public class UIController : MonoBehaviour
         }
     }
 
+    void HandleSpacePress()
+    {
+        if (isExitMenuDisplayed)
+        {
+            return; // Do nothing if the exit menu is displayed :)
+        }
+
+        if (isMainMenuDisplayed)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            TogglePause();
+        }
+    }
+
     void TogglePause()
     {
-        pauseMenu.style.display =
-            pauseMenu.style.display == DisplayStyle.Flex
-            ? DisplayStyle.None
-            : DisplayStyle.Flex;
-        backgroundMenus.style.display =
-            backgroundMenus.style.display == DisplayStyle.Flex
-            ? DisplayStyle.None
-            : DisplayStyle.Flex;
+        if (pauseMenu.style.display == DisplayStyle.Flex)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
     }
 
     void HandleEscapePress()
     {
-        escapePressCount++;
+        if (pauseMenu.style.display == DisplayStyle.Flex)
+        {
+            return; // Do nothing if the pause menu is displayed :)
+        }
 
-        if (escapePressCount == 1)
+        if (!isMainMenuDisplayed && !isExitMenuDisplayed)
         {
             HandleMainMenu();
         }
-        else if (escapePressCount == 2)
+        else if (isMainMenuDisplayed)
         {
-            ExecuteDoubleEscapeFunction();
+            HandleExitMenu();
         }
-        else if (escapePressCount == 3)
+        else if (isExitMenuDisplayed)
         {
-            ExecuteTripleEscapeFunction();
+            Application.Quit();
         }
     }
 
     void HandleMainMenu()
     {
-        if (!isMainMenuDisplayed)
-        {
-            mainMenu.style.display = DisplayStyle.Flex;
-            backgroundMenus.style.display = DisplayStyle.Flex;
-            isMainMenuDisplayed = true;
-        }
-        else
-        {
-            mainMenu.style.display = DisplayStyle.None;
-            backgroundMenus.style.display = DisplayStyle.None;
-            isMainMenuDisplayed = false;
-        } 
-    }
-
-    void ExecuteDoubleEscapeFunction()
-    {
-        exitMenu.style.display = DisplayStyle.Flex;
-        mainMenu.style.display = DisplayStyle.None;
+        mainMenu.style.display = DisplayStyle.Flex;
         backgroundMenus.style.display = DisplayStyle.Flex;
-        isMainMenuDisplayed = false;
+        isMainMenuDisplayed = true;
     }
 
-    void ExecuteTripleEscapeFunction()
+    void HandleExitMenu()
     {
-        Application.Quit(); 
+        mainMenu.style.display = DisplayStyle.None;
+        exitMenu.style.display = DisplayStyle.Flex;
+        isMainMenuDisplayed = false;
+        isExitMenuDisplayed = true;
+    }
+
+    void PauseGame() 
+    {
+        Time.timeScale = 0f;
+        pauseMenu.style.display = DisplayStyle.Flex;
+        backgroundMenus.style.display = DisplayStyle.Flex;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        pauseMenu.style.display = DisplayStyle.None;
+        backgroundMenus.style.display = DisplayStyle.None;
     }
 }
